@@ -28,6 +28,7 @@ function App() {
     return null;
   }
 
+  // TODO: Add ErrorBoundary
   return (
     <GestureHandlerRootView
       style={styles.container}
