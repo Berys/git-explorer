@@ -14,6 +14,7 @@ import { typography } from '@theme/typography';
 import { SearchBar } from '@ui/searchbar';
 import { searchGitHubUsers } from '@api/client';
 import { useQuery } from '@tanstack/react-query';
+import { UserList } from '../components/user-list/user-list';
 
 type GitExplorerProps = NativeStackScreenProps<
   AppStackParamList,
@@ -45,6 +46,7 @@ export const GitExplorer = ({}: GitExplorerProps) => {
         </Text>
       </View>
       <View style={styles.spacer} />
+      <UserList usersData={data?.items} />
     </SafeAreaView>
   );
 };

@@ -1,5 +1,5 @@
 // Type for a single GitHub user item in search results
-type GitHubUserItem = {
+export type GitHubUserItem = {
   login: string;
   id: number;
   node_id: string;
