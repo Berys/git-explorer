@@ -1,13 +1,25 @@
 import { GitHubUserItem } from '@api/types/api-types';
 import { horizontalScale, verticalScale } from '@utils/theme-utils';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import UserCard from '../user-card/user-card';
+import { ResultsLoader } from '@ui/results-loader/results-loader';
+import { ResultsEmpty } from '@ui/results-empty/results-empty';
+import { ResultsError } from '@ui/results-error/results-error';
 
 type UserListProps = {
   usersData: GitHubUserItem[] | undefined;
+  isLoading: boolean;
+  isError: boolean;
 };
 
-export const UserList = ({ usersData }: UserListProps) => {
+export const UserList = ({ usersData, isLoading, isError }: UserListProps) => {
+  if (isError) {
+    return (
+      <View style={styles.contentContainerStyle}>
+        <ResultsError />
+      </View>
+    );
+  }
   return (
     <FlatList
       keyExtractor={(user) => user.id.toString()}
@@ -16,6 +28,7 @@ export const UserList = ({ usersData }: UserListProps) => {
       contentContainerStyle={styles.contentContainerStyle}
       data={usersData}
       renderItem={({ item }) => <UserCard name={item.login} />}
+      ListEmptyComponent={isLoading ? <ResultsLoader /> : <ResultsEmpty />}
     />
   );
 };

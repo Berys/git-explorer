@@ -6,10 +6,11 @@ import { colors } from '@theme/colors';
 import { normalize, verticalScale } from '@utils/theme-utils';
 
 type RetryPros = {
-  retryFunction: () => void;
+  retryFunction?: () => void;
 };
 
-export const Retry = ({ retryFunction }: RetryPros) => {
+export const Retry = ({}: RetryPros) => {
+  // TODO: Add retry function
   return (
     <View style={styles.animationContainer}>
       <LottieView
@@ -18,12 +19,6 @@ export const Retry = ({ retryFunction }: RetryPros) => {
         source={require('../lottie/error-disclaimer.json')}
       />
       <Text style={styles.text}>Something went wrong!</Text>
-      <Pressable
-        style={({ pressed }) => [pressed && { opacity: 0.5 }]}
-        onPress={retryFunction}
-      >
-        <Text style={styles.buttonText}>Retry</Text>
-      </Pressable>
     </View>
   );
 };

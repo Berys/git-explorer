@@ -122,7 +122,6 @@ const UserCard = ({ name }: UserCardProps) => {
               repositoriesData={data}
               isLoading={isLoading}
               isError={isError}
-              retryFunction={() => {}}
             />
           </View>
         </View>

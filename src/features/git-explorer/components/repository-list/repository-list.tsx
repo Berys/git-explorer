@@ -16,14 +16,12 @@ type RepositoryListProps = {
   repositoriesData: UserRepositories | undefined;
   isLoading: boolean;
   isError: boolean;
-  retryFunction: () => void;
 };
 
 export const RepositoryList = ({
   repositoriesData,
   isLoading,
   isError,
-  retryFunction,
 }: RepositoryListProps) => {
   // TODO: Expand animation doesn't rest flatlist container height
 
@@ -32,7 +30,7 @@ export const RepositoryList = ({
   }
 
   if (isError) {
-    return <Retry retryFunction={retryFunction} />;
+    return <Retry />;
   }
 
   return (

@@ -24,7 +24,7 @@ type GitExplorerProps = NativeStackScreenProps<
 export const GitExplorer = ({}: GitExplorerProps) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const { data, error, isLoading } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ['githubUser', searchQuery],
     queryFn: () => searchGitHubUsers(searchQuery),
     enabled: !!searchQuery,
@@ -46,7 +46,13 @@ export const GitExplorer = ({}: GitExplorerProps) => {
         </Text>
       </View>
       <View style={styles.spacer} />
-      <UserList usersData={data?.items} />
+      {searchQuery && (
+        <UserList
+          usersData={data?.items}
+          isLoading={isLoading}
+          isError={isError}
+        />
+      )}
     </SafeAreaView>
   );
 };
