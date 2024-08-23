@@ -1,6 +1,4 @@
 export const timing = {
-  /**
-   * The duration (ms) for quick animations.
-   */
-  quick: 300,
-}
+  minimal: 100,
+  quick: 200,
+};

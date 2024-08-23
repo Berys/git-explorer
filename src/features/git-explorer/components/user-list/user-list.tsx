@@ -1,5 +1,7 @@
 import { GitHubUserItem } from '@api/types/api-types';
+import { horizontalScale, verticalScale } from '@utils/theme-utils';
 import { FlatList, StyleSheet, Text } from 'react-native';
+import UserCard from '../user-card/user-card';
 
 type UserListProps = {
   usersData: GitHubUserItem[] | undefined;
@@ -13,7 +15,7 @@ export const UserList = ({ usersData }: UserListProps) => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.contentContainerStyle}
       data={usersData}
-      renderItem={({ item }) => <Text>{item.login}</Text>}
+      renderItem={({ item }) => <UserCard name={item.login} />}
     />
   );
 };
@@ -21,8 +23,8 @@ export const UserList = ({ usersData }: UserListProps) => {
 const styles = StyleSheet.create({
   contentContainerStyle: {
     flexGrow: 1,
-    paddingBottom: 32,
-    paddingHorizontal: 24,
+    paddingBottom: verticalScale(32),
+    paddingHorizontal: horizontalScale(24),
   },
   flatList: {
     flex: 1,

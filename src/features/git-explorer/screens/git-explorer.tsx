@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: typography.primary.normal,
     fontSize: normalize(14),
+    lineHeight: normalize(16),
   },
   title: {
     fontFamily: typography.primary.bold,
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   },
   spacer: {
     borderBottomWidth: moderateScale(2),
-    marginVertical: verticalScale(20),
+    marginTop: verticalScale(20),
     borderColor: colors.palate.primary,
   },
 });
