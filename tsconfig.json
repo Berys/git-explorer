@@ -1,6 +1,20 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "strict": true
-  }
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@ui/*": ["src/ui/*"],
+      "@api/*": ["src/api/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@theme/*": ["src/theme/*"],
+      "@navigators/*": ["src/navigators/*"],
+      "@utils/*": ["src/utils/*"],
+      "@features/*": ["src/features/*"]
+    },
+    "esModuleInterop": true,
+    "checkJs": true
+  },
+  "exclude": ["node_modules", "babel.config.js", "android", "ios"],
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }
