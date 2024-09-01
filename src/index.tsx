@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { RootNavigator } from './navigators';
-import { customFontsToLoad } from './theme';
+import { colors, customFontsToLoad } from './theme';
 import { StatusBar } from 'expo-status-bar';
 import { QueryProvider } from '@api/api-provider';
+import { RootNavigator } from '@navigators/root-navigation';
+import ErrorBoundary from '@utils/error-boundary';
+import { normalize } from '@utils/theme-utils';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,18 +17,21 @@ function App() {
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad);
 
   const onLayoutRootView = useCallback(async () => {
-    if (areFontsLoaded || fontLoadError) {
-      // setTimeout(async () => {
-      await SplashScreen.hideAsync();
-      // }, 2000);
+    if (areFontsLoaded) {
+      setTimeout(async () => {
+        await SplashScreen.hideAsync();
+      }, 2000); // Ensures the splash screen is displayed for at least 2 seconds
     }
-  }, [areFontsLoaded, fontLoadError]);
+  }, [areFontsLoaded]);
 
-  if (!areFontsLoaded && !fontLoadError) {
-    return null;
+  if (fontLoadError) {
+    return (
+      <ErrorBoundary>
+        <Text style={styles.errorText}>Font loading error!</Text>
+      </ErrorBoundary>
+    );
   }
 
-  // TODO: Add ErrorBoundary
   return (
     <GestureHandlerRootView
       style={styles.container}
@@ -36,9 +39,11 @@ function App() {
     >
       <StatusBar style="light" />
       <SafeAreaProvider>
-        <QueryProvider>
-          <RootNavigator />
-        </QueryProvider>
+        <ErrorBoundary>
+          <QueryProvider>
+            <RootNavigator />
+          </QueryProvider>
+        </ErrorBoundary>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
@@ -49,5 +54,11 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  errorText: {
+    color: colors.text.primary,
+    fontSize: 18,
+    marginTop: normalize(20),
+    textAlign: 'center',
   },
 });
