@@ -25,27 +25,27 @@ export const ResultsEmpty = () => {
 
 const styles = StyleSheet.create({
   animationContainer: {
-    flexGrow: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    flexGrow: 1,
     gap: verticalScale(10),
+    justifyContent: 'center',
   },
   lottieView: {
-    height: horizontalScale(50),
-    position: 'absolute',
-    left: horizontalScale(80),
     bottom: horizontalScale(25),
+    height: horizontalScale(50),
+    left: horizontalScale(80),
+    position: 'absolute',
     width: horizontalScale(50),
-  },
-  title: {
-    color: colors.text.primary,
-    fontFamily: typography.primary.bold,
-    fontSize: normalize(16),
-    lineHeight: normalize(18),
   },
   subtitle: {
     color: colors.text.secondary,
     fontFamily: typography.primary.normal,
+    fontSize: normalize(16),
+    lineHeight: normalize(18),
+  },
+  title: {
+    color: colors.text.primary,
+    fontFamily: typography.primary.bold,
     fontSize: normalize(16),
     lineHeight: normalize(18),
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { typography } from '@theme/typography';
 import { colors } from '@theme/colors';
@@ -26,9 +26,9 @@ export const Retry = ({}: RetryPros) => {
 const styles = StyleSheet.create({
   animationContainer: {
     alignItems: 'center',
+    gap: verticalScale(8),
     justifyContent: 'center',
     marginVertical: verticalScale(10),
-    gap: verticalScale(8),
   },
   lottieView: {
     height: verticalScale(50),
@@ -36,15 +36,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.text.secondary,
-    fontFamily: typography.primary.normal,
-    fontSize: normalize(16),
-    lineHeight: normalize(18),
-  },
-  button: {
-    color: colors.palate.primary,
-  },
-  buttonText: {
-    color: colors.palate.primary,
     fontFamily: typography.primary.normal,
     fontSize: normalize(16),
     lineHeight: normalize(18),
