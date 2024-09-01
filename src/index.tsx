@@ -9,7 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { QueryProvider } from '@api/api-provider';
 import { RootNavigator } from '@navigators/root-navigation';
 import ErrorBoundary from '@utils/error-boundary';
-import { normalize } from '@utils/theme-utils';
+import { normalize, verticalScale } from '@utils/theme-utils';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -26,7 +26,7 @@ function App() {
   }, [areFontsLoaded]);
 
   const onLayoutRootView = useCallback(() => {
-    console.log('onLayoutRootView', areFontsLoaded);
+    // TODO: Investigate useCallback problem on iOS - it is not catching in onLayoutRootView
   }, [areFontsLoaded]);
 
   if (fontLoadError) {
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: colors.text.primary,
-    fontSize: 18,
-    marginTop: normalize(20),
+    fontSize: normalize(20),
+    marginTop: verticalScale(20),
     textAlign: 'center',
   },
 });
