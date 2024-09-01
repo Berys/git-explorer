@@ -1,3 +1,6 @@
+import React, { memo } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated, { ZoomIn } from 'react-native-reanimated';
 import { colors } from '@theme/colors';
 import { timing } from '@theme/timing';
 import { typography } from '@theme/typography';
@@ -8,30 +11,33 @@ import {
   normalize,
   verticalScale,
 } from '@utils/theme-utils';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Animated, { ZoomIn } from 'react-native-reanimated';
 
-export const NoRepositoriesCard = () => {
-  // TODO: Fix icon scaling
-  return (
-    <Animated.View
-      entering={ZoomIn.delay(timing.minimal).duration(timing.quick)}
-    >
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={styles.descriptionText}>
-            {'This user has no repositories'}
-          </Text>
-          <SadFaceIcon
-            scaleX={moderateScale(1.2)}
-            scaleY={moderateScale(1.2)}
-          />
-        </View>
-      </View>
-    </Animated.View>
-  );
+type NoRepositoriesCardProps = {
+  message?: string;
 };
+
+const NoRepositoriesCard: React.FC<NoRepositoriesCardProps> = memo(
+  ({ message = 'This user has no repositories' }) => {
+    return (
+      <Animated.View
+        entering={ZoomIn.delay(timing.minimal).duration(timing.quick)}
+      >
+        <View style={styles.container}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.descriptionText}>{message}</Text>
+            <SadFaceIcon
+              scaleX={moderateScale(1.2)}
+              scaleY={moderateScale(1.2)}
+            />
+          </View>
+        </View>
+      </Animated.View>
+    );
+  },
+);
+
+NoRepositoriesCard.displayName = 'NoRepositoriesCard';
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.palate.background,
@@ -52,3 +58,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
+
+export default NoRepositoriesCard;

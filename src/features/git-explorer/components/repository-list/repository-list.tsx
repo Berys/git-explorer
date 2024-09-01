@@ -1,16 +1,13 @@
+import React from 'react';
 import { UserRepositories } from '@api/types/api-types';
-import {
-  horizontalScale,
-  moderateScale,
-  verticalScale,
-} from '@utils/theme-utils';
-import { StyleSheet, Text, View } from 'react-native';
+import { horizontalScale, verticalScale } from '@utils/theme-utils';
+import { StyleSheet, View } from 'react-native';
 import Animated, { ZoomIn } from 'react-native-reanimated';
 import { RepositoryCard } from '../repository-card/repository-card';
 import { Loader } from '@ui/loader';
 import { Retry } from '@ui/retry/retry';
-import { NoRepositoriesCard } from '../no-repositories-card/no-repositories-card';
 import { timing } from '@theme/timing';
+import NoRepositoriesCard from '../no-repositories-card/no-repositories-card';
 
 type RepositoryListProps = {
   repositoriesData: UserRepositories | undefined;
@@ -61,8 +58,8 @@ export const RepositoryList = ({
 const styles = StyleSheet.create({
   contentContainerStyle: {
     flexGrow: 1,
-    marginVertical: verticalScale(16),
-    marginHorizontal: horizontalScale(10),
     gap: verticalScale(16),
+    marginHorizontal: horizontalScale(10),
+    marginVertical: verticalScale(16),
   },
 });
