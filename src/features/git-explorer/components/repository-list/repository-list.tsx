@@ -4,32 +4,14 @@ import { horizontalScale, verticalScale } from '@utils/theme-utils';
 import { StyleSheet, View } from 'react-native';
 import Animated, { ZoomIn } from 'react-native-reanimated';
 import { RepositoryCard } from '../repository-card/repository-card';
-import { Loader } from '@ui/loader';
-import { Retry } from '@ui/retry/retry';
 import { timing } from '@theme/timing';
 import NoRepositoriesCard from '../no-repositories-card/no-repositories-card';
 
 type RepositoryListProps = {
-  repositoriesData: UserRepositories | undefined;
-  isLoading: boolean;
-  isError: boolean;
+  repositoriesData: UserRepositories;
 };
 
-export const RepositoryList = ({
-  repositoriesData,
-  isLoading,
-  isError,
-}: RepositoryListProps) => {
-  // TODO: Expand animation doesn't rest flatlist container height
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (isError) {
-    return <Retry />;
-  }
-
+export const RepositoryList = ({ repositoriesData }: RepositoryListProps) => {
   return (
     <View style={styles.contentContainerStyle}>
       {repositoriesData && repositoriesData.length > 0 ? (

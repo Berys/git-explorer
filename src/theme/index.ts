@@ -1,3 +1,4 @@
+export * from './animation-hooks';
 export * from './colors';
 export * from './spacing';
 export * from './typography';

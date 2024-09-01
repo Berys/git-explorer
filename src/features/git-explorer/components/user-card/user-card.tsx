@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  interpolateColor,
-  useDerivedValue,
-  interpolate,
-  ZoomIn,
-} from 'react-native-reanimated';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Animated, { withTiming } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@theme/colors';
 import { typography } from '@theme/typography';
@@ -16,6 +8,9 @@ import { searchGitHubUserRepos } from '@api/client';
 import { useQuery } from '@tanstack/react-query';
 import { moderateScale, normalize, verticalScale } from '@utils/theme-utils';
 import { RepositoryList } from '../repository-list/repository-list';
+import { Retry } from '@ui/retry';
+import { Loader } from '@ui/loader';
+import useUserCardAnimations from '@theme/animation-hooks/use-user-card-animation';
 
 const AnimatedIonicons = Animated.createAnimatedComponent(Ionicons);
 
@@ -23,12 +18,18 @@ type UserCardProps = {
   name: string;
 };
 
-const UserCard = ({ name }: UserCardProps) => {
+const UserCard: React.FC<UserCardProps> = ({ name }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const progress = useSharedValue(0);
 
-  const animatedHeightValue = useSharedValue(0);
-  const bodyHeight = useSharedValue(0);
+  const {
+    animatedStyle,
+    animatedHeaderStyle,
+    animatedChevronStyle,
+    animatedTextStyle,
+    progress,
+    animatedHeightValue,
+    bodyHeight,
+  } = useUserCardAnimations(isExpanded);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -37,59 +38,6 @@ const UserCard = ({ name }: UserCardProps) => {
       duration: 0,
     });
   };
-
-  const heightProgress = useDerivedValue(() =>
-    isExpanded
-      ? withTiming(1, { duration: 200 })
-      : withTiming(0, { duration: 200 }),
-  );
-
-  const animatedStyle = useAnimatedStyle(() => {
-    const height = interpolate(
-      animatedHeightValue.value,
-      [0, 1],
-      [0, bodyHeight.value * heightProgress.value + 3],
-    );
-
-    return {
-      height,
-    };
-  });
-
-  const animatedHeaderStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      progress.value,
-      [0, 1],
-      [colors.palate.secondary, colors.palate.primary],
-    );
-    return {
-      backgroundColor,
-    };
-  });
-
-  const animatedChevronStyle = useAnimatedStyle(() => {
-    const rotate = `${progress.value * 180}deg`;
-    const color = interpolateColor(
-      progress.value,
-      [0, 1],
-      [colors.text.primary, colors.text.white],
-    );
-    return {
-      transform: [{ rotate }],
-      color,
-    };
-  });
-
-  const animatedTextStyle = useAnimatedStyle(() => {
-    const color = interpolateColor(
-      progress.value,
-      [0, 1],
-      [colors.text.primary, colors.text.white],
-    );
-    return {
-      color,
-    };
-  });
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['githubUserRepos', name],
@@ -117,12 +65,12 @@ const UserCard = ({ name }: UserCardProps) => {
             bodyHeight.value = event.nativeEvent.layout.height;
           }}
         >
-          <View style={{ flexGrow: 1 }}>
-            <RepositoryList
-              repositoriesData={data}
-              isLoading={isLoading}
-              isError={isError}
-            />
+          <View style={styles.repositoriesWrapper}>
+            {isLoading && <Loader />}
+            {isError && <Retry />}
+            {!isLoading && !isError && (
+              <RepositoryList repositoriesData={data || []} />
+            )}
           </View>
         </View>
       </Animated.View>
@@ -151,6 +99,9 @@ const styles = StyleSheet.create({
     fontSize: normalize(16),
     lineHeight: normalize(18),
     textAlignVertical: 'center',
+  },
+  repositoriesWrapper: {
+    flexGrow: 1,
   },
 });
 
