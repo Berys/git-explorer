@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useFonts } from 'expo-font';
@@ -16,12 +16,17 @@ SplashScreen.preventAutoHideAsync();
 function App() {
   const [areFontsLoaded, fontLoadError] = useFonts(customFontsToLoad);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (areFontsLoaded) {
-      setTimeout(async () => {
+  useEffect(() => {
+    async function hideSplashScreen() {
+      if (areFontsLoaded) {
         await SplashScreen.hideAsync();
-      }, 2000); // Ensures the splash screen is displayed for at least 2 seconds
+      }
     }
+    hideSplashScreen();
+  }, [areFontsLoaded]);
+
+  const onLayoutRootView = useCallback(() => {
+    console.log('onLayoutRootView', areFontsLoaded);
   }, [areFontsLoaded]);
 
   if (fontLoadError) {
