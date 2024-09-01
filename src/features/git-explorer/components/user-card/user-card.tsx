@@ -65,13 +65,11 @@ const UserCard: React.FC<UserCardProps> = ({ name }) => {
             bodyHeight.value = event.nativeEvent.layout.height;
           }}
         >
-          <View style={styles.repositoriesWrapper}>
-            {isLoading && <Loader />}
-            {isError && <Retry />}
-            {!isLoading && !isError && (
-              <RepositoryList repositoriesData={data || []} />
-            )}
-          </View>
+          {isLoading && <Loader />}
+          {isError && <Retry />}
+          {!isLoading && !isError && (
+            <RepositoryList repositoriesData={data || []} />
+          )}
         </View>
       </Animated.View>
     </View>
@@ -99,9 +97,6 @@ const styles = StyleSheet.create({
     fontSize: normalize(16),
     lineHeight: normalize(18),
     textAlignVertical: 'center',
-  },
-  repositoriesWrapper: {
-    flexGrow: 1,
   },
 });
 
