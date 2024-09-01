@@ -12,10 +12,9 @@ export const axiosClient = axios.create({
 export const searchGitHubUsers = async (
   username: string,
 ): Promise<GitHubSearchUsersResponse> => {
-  // For animation purposes
-  await delay(2000);
+  await delay(2000); // For animation purposes
   const response = await axiosClient.get<GitHubSearchUsersResponse>(
-    `${GITHUB_API_URL}/search/users`,
+    '/search/users',
     {
       params: {
         q: username,
@@ -28,10 +27,10 @@ export const searchGitHubUsers = async (
 export const searchGitHubUserRepos = async (
   username: string,
 ): Promise<UserRepositories> => {
-  // For animation purposes
-  await delay(2000);
+  await delay(2000); // For animation purposes
   const response = await axiosClient.get<UserRepositories>(
-    `${GITHUB_API_URL}/users/${username}/repos`,
+    `/users/${username}/repos`,
   );
+
   return response.data;
 };
