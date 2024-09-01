@@ -12,11 +12,11 @@ import {
 } from '@utils/theme-utils';
 import { colors } from '@theme/colors';
 import { typography } from '@theme/typography';
-import { SearchBar } from '@ui/searchbar';
 import { searchGitHubUsers } from '@api/client';
 import { UserList } from '../components/user-list/user-list';
 import { ResultsError } from '@ui/results-error/results-error';
 import { ResultsLoader } from '@ui/results-loader/results-loader';
+import SearchBar from '@ui/searchbar/searchbar';
 
 type GitExplorerProps = NativeStackScreenProps<
   AppStackParamList,

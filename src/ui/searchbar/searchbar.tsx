@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { colors } from '@theme/colors';
 import { typography } from '@theme/typography';
@@ -9,16 +9,30 @@ import {
   normalize,
   verticalScale,
 } from '@utils/theme-utils';
+import debounce from 'lodash/debounce';
 
 type SearchBarProps = {
   onSearch: (query: string) => void;
 };
 
-export function SearchBar({ onSearch }: SearchBarProps) {
+const SearchBar: React.FC<SearchBarProps> = React.memo(({ onSearch }) => {
   const [searchText, setSearchText] = useState('');
+
+  const debouncedSearch = useCallback(
+    debounce((query) => {
+      onSearch(query);
+    }, 500),
+    [],
+  );
+
+  const handleChangeText = (text: string) => {
+    setSearchText(text);
+    debouncedSearch(text);
+  };
 
   const handleSearch = () => {
     if (searchText.trim()) {
+      debouncedSearch.cancel();
       onSearch(searchText.trim());
     }
   };
@@ -29,7 +43,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
         style={styles.searchInput}
         placeholderTextColor={colors.text.secondary}
         value={searchText}
-        onChangeText={setSearchText}
+        onChangeText={handleChangeText}
         keyboardType="default"
         returnKeyType="search"
         placeholder="e.g. facebook"
@@ -58,7 +72,9 @@ export function SearchBar({ onSearch }: SearchBarProps) {
       </Pressable>
     </View>
   );
-}
+});
+
+SearchBar.displayName = 'NoRepositoriesCard';
 
 const styles = StyleSheet.create({
   searchBar: {
@@ -85,3 +101,5 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(12),
   },
 });
+
+export default SearchBar;
