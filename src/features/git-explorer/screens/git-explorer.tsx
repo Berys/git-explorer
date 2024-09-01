@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NativeStackScreenProps } from 'react-native-screens/lib/typescript/native-stack/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppStackParamList } from '@navigators/root-navigation';
+import { useQuery } from '@tanstack/react-query';
 import {
   horizontalScale,
   moderateScale,
@@ -13,16 +14,21 @@ import { colors } from '@theme/colors';
 import { typography } from '@theme/typography';
 import { SearchBar } from '@ui/searchbar';
 import { searchGitHubUsers } from '@api/client';
-import { useQuery } from '@tanstack/react-query';
 import { UserList } from '../components/user-list/user-list';
+import { ResultsError } from '@ui/results-error/results-error';
+import { ResultsLoader } from '@ui/results-loader/results-loader';
 
 type GitExplorerProps = NativeStackScreenProps<
   AppStackParamList,
   'GitExplorer'
 >;
 
-export const GitExplorer = ({}: GitExplorerProps) => {
+export const GitExplorer: React.FC<GitExplorerProps> = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const handleSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+  }, []);
 
   const { data, isError, isLoading } = useQuery({
     queryKey: ['githubUser', searchQuery],
@@ -30,9 +36,17 @@ export const GitExplorer = ({}: GitExplorerProps) => {
     enabled: !!searchQuery,
   });
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
+  const renderContent = useMemo(() => {
+    if (isLoading) {
+      return <ResultsLoader />;
+    }
+
+    if (isError) {
+      return <ResultsError />;
+    }
+
+    return data ? <UserList usersData={data.items} /> : null;
+  }, [isLoading, isError, data]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -46,26 +60,25 @@ export const GitExplorer = ({}: GitExplorerProps) => {
         </Text>
       </View>
       <View style={styles.spacer} />
-      {searchQuery && (
-        <UserList
-          usersData={data?.items}
-          isLoading={isLoading}
-          isError={isError}
-        />
-      )}
+      {renderContent}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.palate.background,
     flexGrow: 1,
     paddingTop: verticalScale(32),
-    backgroundColor: colors.palate.background,
   },
   header: {
-    paddingHorizontal: horizontalScale(24),
     gap: verticalScale(20),
+    paddingHorizontal: horizontalScale(24),
+  },
+  spacer: {
+    borderBottomWidth: moderateScale(2),
+    borderColor: colors.palate.primary,
+    marginTop: verticalScale(20),
   },
   subtitle: {
     fontFamily: typography.primary.normal,
@@ -75,10 +88,5 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: typography.primary.bold,
     fontSize: normalize(32),
-  },
-  spacer: {
-    borderBottomWidth: moderateScale(2),
-    marginTop: verticalScale(20),
-    borderColor: colors.palate.primary,
   },
 });
