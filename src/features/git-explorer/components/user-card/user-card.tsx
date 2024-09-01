@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { withTiming } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -45,6 +45,18 @@ const UserCard: React.FC<UserCardProps> = ({ name }) => {
     enabled: isExpanded,
   });
 
+  const renderContent = useMemo(() => {
+    if (isLoading) {
+      return <Loader />;
+    }
+
+    if (isError) {
+      return <Retry />;
+    }
+
+    return data ? <RepositoryList repositoriesData={data} /> : null;
+  }, [isLoading, isError, data]);
+
   return (
     <View style={styles.container}>
       <Pressable onPress={toggleExpand}>
@@ -65,11 +77,7 @@ const UserCard: React.FC<UserCardProps> = ({ name }) => {
             bodyHeight.value = event.nativeEvent.layout.height;
           }}
         >
-          {isLoading && <Loader />}
-          {isError && <Retry />}
-          {!isLoading && !isError && (
-            <RepositoryList repositoriesData={data || []} />
-          )}
+          {renderContent}
         </View>
       </Animated.View>
     </View>
