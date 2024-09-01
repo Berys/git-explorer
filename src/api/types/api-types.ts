@@ -56,7 +56,7 @@ export type GitHubSearchUsersResponse = {
 export type UserRepositories = Repository[];
 
 // Type for a single repository
-type Repository = {
+export type Repository = {
   id: number; // Unique identifier of the repository
   node_id: string;
   name: string; // The name of the repository

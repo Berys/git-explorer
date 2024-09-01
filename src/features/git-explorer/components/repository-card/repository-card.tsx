@@ -1,3 +1,6 @@
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Repository } from '@api/types/api-types';
 import { colors } from '@theme/colors';
 import { typography } from '@theme/typography';
 import StarIcon from '@ui/icons/star-icon';
@@ -7,39 +10,57 @@ import {
   normalize,
   verticalScale,
 } from '@utils/theme-utils';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
 type RepositoryCardProps = {
-  name: string;
-  description: string | null;
-  noStars: number;
+  repository: Repository;
 };
 
-export const RepositoryCard = ({
-  name,
-  description,
-  noStars,
-}: RepositoryCardProps) => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>{name}</Text>
-        <View style={styles.noStarsContainer}>
-          <Text style={styles.noStarsText}>{noStars}</Text>
-          <StarIcon />
-        </View>
-      </View>
-      {description && (
-        <View>
-          <Text numberOfLines={5} style={styles.descriptionText}>
-            {description}
+const RepositoryCard: React.FC<RepositoryCardProps> = React.memo(
+  ({ repository }) => {
+    const { name, description, stargazers_count: noStars } = repository;
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text
+            style={styles.headerText}
+            accessible={true}
+            accessibilityLabel={`Repository name: ${name}`}
+          >
+            {name}
           </Text>
+          <View style={styles.noStarsContainer}>
+            <Text
+              style={styles.noStarsText}
+              accessible={true}
+              accessibilityLabel={`Stars: ${noStars}`}
+            >
+              {noStars}
+            </Text>
+            <StarIcon />
+          </View>
         </View>
-      )}
-    </View>
-  );
-};
+        {description && (
+          <View>
+            <Text
+              numberOfLines={5}
+              style={styles.descriptionText}
+              accessible={true}
+              accessibilityLabel={`Description: ${description}`}
+            >
+              {description}
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  },
+);
+
+RepositoryCard.displayName = 'RepositoryCard';
+
+export default RepositoryCard;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.palate.background,

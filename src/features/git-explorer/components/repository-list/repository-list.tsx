@@ -3,15 +3,16 @@ import { UserRepositories } from '@api/types/api-types';
 import { horizontalScale, verticalScale } from '@utils/theme-utils';
 import { StyleSheet, View } from 'react-native';
 import Animated, { ZoomIn } from 'react-native-reanimated';
-import { RepositoryCard } from '../repository-card/repository-card';
 import { timing } from '@theme/timing';
 import NoRepositoriesCard from '../no-repositories-card/no-repositories-card';
+import RepositoryCard from '../repository-card/repository-card';
 
 type RepositoryListProps = {
   repositoriesData: UserRepositories;
 };
 
 export const RepositoryList = ({ repositoriesData }: RepositoryListProps) => {
+  //  TODO: flatlist + pagination
   return (
     <View style={styles.contentContainerStyle}>
       {repositoriesData && repositoriesData.length > 0 ? (
@@ -22,12 +23,7 @@ export const RepositoryList = ({ repositoriesData }: RepositoryListProps) => {
               timing.minimal + index * timing.minimal,
             ).duration(timing.quick)}
           >
-            <RepositoryCard
-              key={repo.id}
-              name={repo.name}
-              description={repo.description}
-              noStars={repo.stargazers_count}
-            />
+            <RepositoryCard key={repo.id} repository={repo} />
           </Animated.View>
         ))
       ) : (
