@@ -6,8 +6,15 @@ module.exports = function (api) {
       [
         'module-resolver',
         {
+          root: ['./src'],
           alias: {
-            '@': './src',
+            '@api': './src/api',
+            '@theme': './src/theme',
+            '@utils': './src/utils',
+            '@ui': './src/ui',
+            '@navigators': './src/navigators',
+            '@features': './src/features',
+            '@hooks': './src/hooks',
           },
         },
       ],

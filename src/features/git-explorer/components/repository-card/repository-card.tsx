@@ -20,12 +20,13 @@ const RepositoryCard: React.FC<RepositoryCardProps> = React.memo(
     const { name, description, stargazers_count: noStars } = repository;
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID="repository-card">
         <View style={styles.headerContainer}>
           <Text
             style={styles.headerText}
             accessible={true}
             accessibilityLabel={`Repository name: ${name}`}
+            testID="repository-name"
           >
             {name}
           </Text>
@@ -34,6 +35,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = React.memo(
               style={styles.noStarsText}
               accessible={true}
               accessibilityLabel={`Stars: ${noStars}`}
+              testID="repository-stars"
             >
               {noStars}
             </Text>
@@ -47,6 +49,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = React.memo(
               style={styles.descriptionText}
               accessible={true}
               accessibilityLabel={`Description: ${description}`}
+              testID="repository-description"
             >
               {description}
             </Text>
