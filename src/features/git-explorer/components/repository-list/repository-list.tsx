@@ -26,11 +26,9 @@ export const RepositoryList: React.FC<RepositoryListProps> = ({
         timing.quick,
       )}
     >
-      <RepositoryCard repository={item} />
+      <RepositoryCard repository={item} testID={`repository-item-${item.id}`} />
     </Animated.View>
   );
-
-  //  TODO: Add pagination
 
   return (
     <FlatList
@@ -41,7 +39,8 @@ export const RepositoryList: React.FC<RepositoryListProps> = ({
       contentContainerStyle={styles.contentContainerStyle}
       onEndReached={loadMore}
       onEndReachedThreshold={0.5}
-      ListEmptyComponent={<NoRepositoriesCard />}
+      ListEmptyComponent={<NoRepositoriesCard testID="empty-state" />}
+      testID="repository-list"
     />
   );
 };

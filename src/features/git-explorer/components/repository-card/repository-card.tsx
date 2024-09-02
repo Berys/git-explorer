@@ -13,14 +13,15 @@ import {
 
 type RepositoryCardProps = {
   repository: Repository;
+  testID?: string;
 };
 
 const RepositoryCard: React.FC<RepositoryCardProps> = React.memo(
-  ({ repository }) => {
+  ({ repository, testID }) => {
     const { name, description, stargazers_count: noStars } = repository;
 
     return (
-      <View style={styles.container} testID="repository-card">
+      <View style={styles.container} testID={testID}>
         <View style={styles.headerContainer}>
           <Text
             style={styles.headerText}

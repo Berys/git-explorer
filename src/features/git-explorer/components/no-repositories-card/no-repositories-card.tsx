@@ -14,17 +14,20 @@ import {
 
 type NoRepositoriesCardProps = {
   message?: string;
+  testID?: string;
 };
 
 const NoRepositoriesCard: React.FC<NoRepositoriesCardProps> = memo(
-  ({ message = 'This user has no repositories' }) => {
+  ({ message = 'This user has no repositories', testID }) => {
     return (
       <Animated.View
         entering={ZoomIn.delay(timing.minimal).duration(timing.quick)}
       >
         <View style={styles.container}>
           <View style={styles.headerContainer}>
-            <Text style={styles.descriptionText}>{message}</Text>
+            <Text testID={testID} style={styles.descriptionText}>
+              {message}
+            </Text>
             <SadFaceIcon
               scaleX={moderateScale(1.2)}
               scaleY={moderateScale(1.2)}
